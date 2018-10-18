@@ -59,8 +59,9 @@ The KStem stemmer in
 was developed by Bob Krovetz and Sergio Guzman-Lara (CIIR-UMass Amherst)
 under the BSD-license.
 
-The Arabic,Persian,Romanian,Bulgarian, Hindi and Bengali analyzers (common) come with a default
+The Amharic,Arabic,Persian,Romanian,Bulgarian, Hindi and Bengali analyzers (common) come with a default
 stopword list that is BSD-licensed created by Jacques Savoy.  These files reside in:
+analysis/common/src/resources/org/apache/lucene/analysis/am/stopwords.txt,
 analysis/common/src/resources/org/apache/lucene/analysis/ar/stopwords.txt,
 analysis/common/src/resources/org/apache/lucene/analysis/fa/stopwords.txt,
 analysis/common/src/resources/org/apache/lucene/analysis/ro/stopwords.txt,
