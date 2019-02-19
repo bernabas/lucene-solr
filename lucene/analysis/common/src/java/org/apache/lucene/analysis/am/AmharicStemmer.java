@@ -290,248 +290,165 @@ public class AmharicStemmer {
   }
 
   public int stemPrefix(char s[], int len) {
-    if (s[0] == 'የ') {
-      return deleteN(s, 0, len, 1);
+    int l = 0;
+
+    if ((s[l]==E && s[l+1]==NE && s[l+2]==DE) || // 3 PREFIXES
+        (s[l]==E && s[l+1]==NE && s[l+2]==DA) ||
+        (s[l]==E && s[l+1]==NE && s[l+2]==DI) ||
+        (s[l]==YA && s[l+1]==MAA && s[l+2]==YE)){
+      len = deleteN(s, l, len, 3);
+      l+=3;
+    } else if ((s[l]==E && s[l+1]==NE ) || // 2 PREFIXES
+            (s[l]==E && s[l+1]==NA ) ||
+            (s[l]==E && s[l+1]==YA ) ||
+            (s[l]==A && s[l+1]==LE ) ||
+            (s[l]==YA && s[l+1]==MI ) ||
+            (s[l]==YA && s[l+1]==ME ) ||
+            (s[l]==A && s[l+1]==YE )  ||
+            (s[l]==A && s[l+1]==SE ) ||
+            (s[l]==BA && s[l+1]==MA ) ||
+            (s[l]==YA && s[l+1]==TA)) {
+      len = deleteN(s, l, len, 2);
+      l+=2;
+    } else if ((s[l] == E) || // 1 PREFIX 
+              (s[l]==LE ) ||
+              (s[l]==TE ) ||
+              (s[l]==YE ) ||
+              (s[l]==BE ) ||
+              (s[l]==BA ) ||
+              (s[l]==BI ) ||
+              (s[l]==MA ) ||
+              (s[l]==KA ) ||
+              (s[l]==LA ) ||
+              (s[l]==YAA ) ||
+              (s[l]==YA ) ||
+              (s[l]==LE )){
+      len = deleteN(s, l, len, 2);        
+      l+=1;
     }
     return len;
   }
 
   public int stemSuffix(char s[], int len) {
+    if (s[len-1] == NAA) {
+      len = deleteN(s, len-1, len, 1);
+    }
+
     int last = len - 1;
 
-
-    if ((last > 6 && endsWith(s, len, "አችኋለሁ")) ||
-        (last > 6 && endsWith(s, len, "አችዋለሁ")) ||
-        (last > 6 && endsWith(s, len, "አችዋለሽ"))) {
+    if (last > 6 && // 5 SUFFIXES
+        ((endsWith(s, len, "አችኋለሁ")) ||
+        (endsWith(s, len, "አችዋለሁ")) ||
+        (endsWith(s, len, "አችዋለሽ")))) {
       last -= 5;
       len = deleteN(s, last + 1, len, 5);
-    } else if ((last > 5 && s[last-3]==CE &&s[last-2]==HU && s[last-1]==A && s[last]==TE) || 
-              (last>5 && s[last-3]==WAA &&s[last-2]==CE && s[last-1]==XWAA && s[last]==LE) ||
-              (last>5 && s[last-3]==WAA &&s[last-2]==CA && s[last-1]==WAA && s[last]==LE) ||
-              (last>5 && s[last-3]==CA &&s[last-2]==WAA && s[last-1]==LA && s[last]==CE) ||
-              (last>5 && s[last-3]==A && s[last-2]==TAA &&s[last-1]==LA && s[last]==HU) ||
-              (last>5 && s[last-3]==A &&s[last-2]==TAA && s[last-1]==LA && s[last]==SHE) ||
-              (last>5 && s[last-3]==HAA &&s[last-2]==CA && s[last-1]==WAA && s[last]==LE) ||
-              (last>5 && s[last-3]==CA &&s[last-2]==WAA && s[last-1]==LA && s[last]==HE) ||
-              (last>5 && s[last-3]==SHAA &&s[last-2]==A &&s[last-1]==CA && s[last]==WE) || 
-              (last>5 && s[last-3]==SHAA && s[last-2]==CA &&s[last-1]==WAA && s[last]==LE)) { //SUFFIX FOUR "ቼሁአት"
+    } else if (last > 5 && // 4 SUFFIXES
+              ((s[last-3]==CE &&s[last-2]==HU && s[last-1]==A && s[last]==TE) || 
+              (s[last-3]==WAA &&s[last-2]==CE && s[last-1]==XWAA && s[last]==LE) ||
+              (s[last-3]==WAA &&s[last-2]==CA && s[last-1]==WAA && s[last]==LE) ||
+              (s[last-3]==CA &&s[last-2]==WAA && s[last-1]==LA && s[last]==CE) ||
+              (s[last-3]==A && s[last-2]==TAA &&s[last-1]==LA && s[last]==HU) ||
+              (s[last-3]==A &&s[last-2]==TAA && s[last-1]==LA && s[last]==SHE) ||
+              (s[last-3]==HAA &&s[last-2]==CA && s[last-1]==WAA && s[last]==LE) ||
+              (s[last-3]==CA &&s[last-2]==WAA && s[last-1]==LA && s[last]==HE) ||
+              (s[last-3]==SHAA &&s[last-2]==A &&s[last-1]==CA && s[last]==WE) || 
+              (s[last-3]==SHAA && s[last-2]==CA &&s[last-1]==WAA && s[last]==LE))) { 
       last -= 4;
       len = deleteN(s, last, len, 4);
-    } else if ((last>3 && s[last-2]==SHE &&s[last-1]==NYAA && s[last]==LE) ||
-              (last>3 && s[last-2]==SHE &&s[last-1]==WAA && s[last]==LE) ||
-              (last>3 && s[last-2]==SHAA &&s[last-1]==TAA && s[last]==LE) ||
-              (last>3 && s[last-2]==SHE &&s[last-1]==NAA && s[last]==LE) ||
-              (last>3 && s[last-2]==SHAA && s[last-1]==CA && s[last]==WE) ||
-              (last>3 && s[last-2]==NYAA &&s[last-1]==LA && s[last]==SHE) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==LA && s[last]==SHE) ||
-              (last>3 && s[last-2]==NAA &&s[last-1]==LA && s[last]==SHE) ||
-              (last>3 && s[last-2]==XWAA &&s[last-1]==CHA && s[last]==WE) ||
-              (last>3 && s[last-2]==KXA &&s[last-1]==NYAA && s[last]==LE) ||
-              (last>3 && s[last-2]==KXA &&s[last-1]==WAA && s[last]==LE) ||
-              (last>3 && s[last-2]==HAA &&s[last-1]==TA && s[last]==LE) ||
-              (last>3 && s[last-2]==KXA &&s[last-1]==NAA && s[last]==LE) ||
-              (last>3 && s[last-2]==NYAA &&s[last-1]==LA && s[last]==HE) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==LA && s[last]==HE) ||
-              (last>3 && s[last-2]==TAA &&s[last-1]==LA && s[last]==HE) ||
-              (last>3 && s[last-2]==NAA &&s[last-1]==LA && s[last]==HE) ||
-              (last>3 && s[last-2]==XWAA && s[last-1]==CE && s[last]==HU) ||
-              (last>3 && s[last-2]==XWAA &&s[last-1]==CA && s[last]==WE) ||
-              (last>3 && s[last-2]==HAA &&s[last-1]==LA && s[last]==HU) ||
-              (last>3 && s[last-2]==SHAA &&s[last-1]==LA && s[last]==HU) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==LA && s[last]==HU) ||
-              (last>3 && s[last-2]==CAA &&s[last-1]==CE && s[last]==HU) ||
-              (last>3 && s[last-2]==CAA &&s[last-1]==CE && s[last]==WE) ||
-              (last>3 && s[last-2]==NAA &&s[last-1]==CE && s[last]==HU) ||
-              (last>3 && s[last-2]==NAA &&s[last-1]==CA && s[last]==WE) ||
-              (last>3 && s[last-2]==CE &&s[last-1]==HU && s[last]==NYE) ||
-              (last>3 && s[last-2]==CE &&s[last-1]==HU && s[last]==TE) ||
-              (last>3 && s[last-2]==CE &&s[last-1]==HU && s[last]==NE) ||
-              (last>3 && s[last-2]==NYA &&s[last-1]==LA && s[last]==CE) ||
-              (last>3 && s[last-2]==HAA &&s[last-1]==LA && s[last]==CE)  ||
-              (last>3 && s[last-2]==SHAA &&s[last-1]==LA && s[last]==CE) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==LA && s[last]==CE) ||
-              (last>3 && s[last-2]==TAA &&s[last-1]==LA && s[last]==CE) ||
-              (last>3 && s[last-2]==NAA &&s[last-1]==LA && s[last]==CE) ||
-              (last>3 && s[last-2]==NE &&s[last-1]==HAA && s[last]==LE) ||
-              (last>3 && s[last-2]==NE &&s[last-1]==SHAA && s[last]==LE) ||
-              (last>3 && s[last-2]==NA &&s[last-1]==WAA && s[last]==LE) ||
-              (last>3 && s[last-2]==NAA &&s[last-1]==TAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WE &&s[last-1]==NYAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WE &&s[last-1]==HAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WE &&s[last-1]==SHAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WE &&s[last-1]==TAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==TAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WE &&s[last-1]==NAA && s[last]==LE) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==CE && s[last]==HU) ||
-              (last>3 && s[last-2]==WAA &&s[last-1]==CE && s[last]==WE) ||
-              (last>3 && s[last-2]==WE && s[last-1]==YAA && s[last]==NE) 
-              ){
+    } else if (last > 3 && // 3 SUFFIXES
+              ((s[last-2]==SHE &&s[last-1]==NYAA && s[last]==LE) ||
+              (s[last-2]==SHE &&s[last-1]==WAA && s[last]==LE) ||
+              (s[last-2]==SHAA &&s[last-1]==TAA && s[last]==LE) ||
+              (s[last-2]==SHE &&s[last-1]==NAA && s[last]==LE) ||
+              (s[last-2]==SHAA && s[last-1]==CA && s[last]==WE) ||
+              (s[last-2]==NYAA &&s[last-1]==LA && s[last]==SHE) ||
+              (s[last-2]==WAA &&s[last-1]==LA && s[last]==SHE) ||
+              (s[last-2]==NAA &&s[last-1]==LA && s[last]==SHE) ||
+              (s[last-2]==XWAA &&s[last-1]==CHA && s[last]==WE) ||
+              (s[last-2]==KXA &&s[last-1]==NYAA && s[last]==LE) ||
+              (s[last-2]==KXA &&s[last-1]==WAA && s[last]==LE) ||
+              (s[last-2]==HAA &&s[last-1]==TA && s[last]==LE) ||
+              (s[last-2]==KXA &&s[last-1]==NAA && s[last]==LE) ||
+              (s[last-2]==NYAA &&s[last-1]==LA && s[last]==HE) ||
+              (s[last-2]==WAA &&s[last-1]==LA && s[last]==HE) ||
+              (s[last-2]==TAA &&s[last-1]==LA && s[last]==HE) ||
+              (s[last-2]==NAA &&s[last-1]==LA && s[last]==HE) ||
+              (s[last-2]==XWAA && s[last-1]==CE && s[last]==HU) ||
+              (s[last-2]==XWAA &&s[last-1]==CA && s[last]==WE) ||
+              (s[last-2]==HAA &&s[last-1]==LA && s[last]==HU) ||
+              (s[last-2]==SHAA &&s[last-1]==LA && s[last]==HU) ||
+              (s[last-2]==WAA &&s[last-1]==LA && s[last]==HU) ||
+              (s[last-2]==CAA &&s[last-1]==CE && s[last]==HU) ||
+              (s[last-2]==CAA &&s[last-1]==CE && s[last]==WE) ||
+              (s[last-2]==NAA &&s[last-1]==CE && s[last]==HU) ||
+              (s[last-2]==NAA &&s[last-1]==CA && s[last]==WE) ||
+              (s[last-2]==CE &&s[last-1]==HU && s[last]==NYE) ||
+              (s[last-2]==CE &&s[last-1]==HU && s[last]==TE) ||
+              (s[last-2]==CE &&s[last-1]==HU && s[last]==NE) ||
+              (s[last-2]==NYA &&s[last-1]==LA && s[last]==CE) ||
+              (s[last-2]==HAA &&s[last-1]==LA && s[last]==CE)  ||
+              (s[last-2]==SHAA &&s[last-1]==LA && s[last]==CE) ||
+              (s[last-2]==WAA &&s[last-1]==LA && s[last]==CE) ||
+              (s[last-2]==TAA &&s[last-1]==LA && s[last]==CE) ||
+              (s[last-2]==NAA &&s[last-1]==LA && s[last]==CE) ||
+              (s[last-2]==NE &&s[last-1]==HAA && s[last]==LE) ||
+              (s[last-2]==NE &&s[last-1]==SHAA && s[last]==LE) ||
+              (s[last-2]==NA &&s[last-1]==WAA && s[last]==LE) ||
+              (s[last-2]==NAA &&s[last-1]==TAA && s[last]==LE) ||
+              (s[last-2]==WE &&s[last-1]==NYAA && s[last]==LE) ||
+              (s[last-2]==WE &&s[last-1]==HAA && s[last]==LE) ||
+              (s[last-2]==WE &&s[last-1]==SHAA && s[last]==LE) ||
+              (s[last-2]==WE &&s[last-1]==TAA && s[last]==LE) ||
+              (s[last-2]==WAA &&s[last-1]==TAA && s[last]==LE) ||
+              (s[last-2]==WE &&s[last-1]==NAA && s[last]==LE) ||
+              (s[last-2]==WAA &&s[last-1]==CE && s[last]==HU) ||
+              (s[last-2]==WAA &&s[last-1]==CE && s[last]==WE) ||
+              (s[last-2]==WE && s[last-1]==YAA && s[last]==NE))){
         last -= 3;
         len = deleteN(s, last, len, 3);
     }
-    //2 SUFFIXES
-    else if(last>2 && s[last-1]==SHE && s[last]==NYE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==SHE && s[last]==WE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==SHAA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==SHE && s[last]==NE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NYAA && s[last]==LE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==HAA && s[last]==LE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==SHAA && s[last]==LE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==TAA && s[last]==LE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NAA && s[last]==LE) 
-    {
-        last-=2;
-    }
-    else if(s[last-1]==SHAA && s[last]==LE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==HU) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CA && s[last]==HU) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==HU) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==KXA && s[last]==NYE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==KXA && s[last]==WE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==HAA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==KXA && s[last]==NE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==HU && s[last]==HE) //hu h
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==HU && s[last]==SHE)// hu sh
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==HU && s[last]==TE) //hu t
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==XWAA && s[last]==TE) //hua t
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==NYE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==HE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==SHE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==WE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CAA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==CE && s[last]==NE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NE && s[last]==HE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NE && s[last]==SHE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NA && s[last]==WE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NAA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==WE && s[last]==NYE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==WE && s[last]==HE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==WE && s[last]==SHE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==WE && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==WAA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==WO && s[last]==CE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==YAA && s[last]==NE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==YAA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    else if(last>2 && s[last-1]==NA && s[last]==TE) 
-    {
-        last-=2;
-    }
-    //SUFFIX ONE
-    else if ((last>1 && s[last]==NYE) || 
+    else if ((last > 2) && // 2 SUFFIXES
+            ((s[last-1]==SHE && s[last]==NYE) ||
+            (s[last-1]==SHE && s[last]==WE) ||
+            (s[last-1]==SHAA && s[last]==TE) ||
+            (s[last-1]==SHE && s[last]==NE) ||
+            (s[last-1]==NYAA && s[last]==LE) ||
+            (s[last-1]==HAA && s[last]==LE) ||
+            (s[last-1]==SHAA && s[last]==LE) ||
+            (s[last-1]==TAA && s[last]==LE) ||
+            (s[last-1]==NAA && s[last]==LE) ||
+            (s[last-1]==CE && s[last]==HU) ||
+            (s[last-1]==CA && s[last]==HU) ||
+            (s[last-1]==KXA && s[last]==NYE) ||
+            (s[last-1]==KXA && s[last]==WE) ||
+            (s[last-1]==HAA && s[last]==TE) ||
+            (s[last-1]==KXA && s[last]==NE) ||
+            (s[last-1]==HU && s[last]==HE) ||
+            (s[last-1]==HU && s[last]==SHE) ||
+            (s[last-1]==HU && s[last]==TE) ||
+            (s[last-1]==XWAA && s[last]==TE) ||
+            (s[last-1]==CE && s[last]==NYE) ||
+            (s[last-1]==CE && s[last]==HE) ||
+            (s[last-1]==CE && s[last]==SHE) ||
+            (s[last-1]==CE && s[last]==WE) ||
+            (s[last-1]==CAA && s[last]==TE) ||
+            (s[last-1]==CE && s[last]==NE) ||
+            (s[last-1]==NE && s[last]==HE) ||
+            (s[last-1]==NE && s[last]==SHE) ||
+            (s[last-1]==NA && s[last]==WE) ||
+            (s[last-1]==NAA && s[last]==TE) ||
+            (s[last-1]==WE && s[last]==NYE) ||
+            (s[last-1]==WE && s[last]==HE) ||
+            (s[last-1]==WE && s[last]==SHE) ||
+            (s[last-1]==WE && s[last]==TE) ||
+            (s[last-1]==WAA && s[last]==TE) ||
+            (s[last-1]==WO && s[last]==CE) ||
+            (s[last-1]==YAA && s[last]==NE) ||
+            (s[last-1]==YAA && s[last]==TE) ||
+            (s[last-1]==NA && s[last]==TE))) {
+      last -= 2;
+      len = deleteN(s, last, len, 2);
+    } else if ((last>1 && s[last]==NYE) || // 1 SUFFIX
             (last>1 && s[last]==HE) || 
             (last>1 && s[last]==SHE) ||
             (s[last]==WE) ||

@@ -32,6 +32,9 @@ import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
  *
  */
 public class TestAmharicStemFilter extends BaseTokenStreamTestCase {
+  public void testNAASuffix() throws IOException {
+    check("ኑና", "ኑ");
+  }
 
   public void testFiveSuffix() throws IOException {
     check("ፈልጊአችኋለሁ", "ፈልጊ");
