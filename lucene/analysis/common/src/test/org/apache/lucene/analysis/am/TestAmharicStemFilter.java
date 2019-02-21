@@ -33,13 +33,15 @@ import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
  */
 public class TestAmharicStemFilter extends BaseTokenStreamTestCase {
   public void testNAASuffix() throws IOException {
-    check("ኑና", "ኑ");
+    //check("መምጣትና", "ምትት"); 
+    //check("መምታትና", "ምትት");
+    check("መታኝ", "ምኝ");
   }
 
   public void testFiveSuffix() throws IOException {
-    check("ፈልጊአችኋለሁ", "ፈልጊ");
-    check("ፈልጊአችዋለሁ", "ፈልጊ");
-    check("ፈልጊአችዋለሽ", "ፈልጊ");
+    check("ፈልጊአችኋለሁ", "ፍልግ");
+    check("ፈልጊአችዋለሁ", "ፍልግ");
+    check("ፈልጊአችዋለሽ", "ፍልግ");
   }
 
   private void check(final String input, final String expected) throws IOException {

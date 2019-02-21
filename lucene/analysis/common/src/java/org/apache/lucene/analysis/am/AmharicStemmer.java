@@ -22,42 +22,42 @@ import static org.apache.lucene.analysis.util.StemmerUtil.endsWith;
 public class AmharicStemmer {
 
   private static final char[][] UNICODECHARS = { 
-    {'\u1200', '\u1201','\u1202','\u1203','\u1204','\u1205','\u1206'},
-    {'\u1208', '\u1209','\u120A','\u120B','\u120C','\u120D','\u120E'},
-    {'\u1210', '\u1211','\u1212','\u1213','\u1214','\u1215','\u1216'},
-    {'\u1218', '\u1219','\u121A','\u121B','\u121C','\u121D','\u121E'},
-    {'\u1220', '\u1221','\u1222','\u1223','\u1224','\u1225','\u1226'},
-    {'\u1228', '\u1229','\u122A','\u122B','\u122C','\u122D','\u122E'},
-    {'\u1230', '\u1231','\u1232','\u1233','\u1234','\u1235','\u1236'},
-    {'\u1238', '\u1239','\u123A','\u123B','\u123C','\u123D','\u123E'},
-    {'\u1240', '\u1241','\u1242','\u1243','\u1244','\u1245','\u1246'},
-    {'\u1260', '\u1261','\u1262','\u1263','\u1264','\u1265','\u1266'},
-    {'\u1268', '\u1269','\u126A','\u126B','\u126C','\u126D','\u126E'},
-    {'\u1270', '\u1271','\u1272','\u1273','\u1274','\u1275','\u1276'},
-    {'\u1278', '\u1279','\u127A','\u127B','\u127C','\u127D','\u127E'},
-    {'\u1280', '\u1281','\u1282','\u1283','\u1284','\u1285','\u1286'},
-    {'\u1290', '\u1291','\u1292','\u1293','\u1294','\u1295','\u1296'},
-    {'\u1298', '\u1299','\u129A','\u129B','\u129C','\u129D','\u129E'},
-    {'\u12A0', '\u12A1','\u12A2','\u12A3','\u12A4','\u12A5','\u12A6'},
-    {'\u12A8', '\u12A9','\u12AA','\u12AB','\u12AC','\u12AD','\u12AE'},
-    {'\u12B8', '\u12B9','\u12BA','\u12BB','\u12BC','\u12BD','\u12BE'},
-    {'\u12C8', '\u12C9','\u12CA','\u12CB','\u12CC','\u12CD','\u12CE'},
-    {'\u12D0', '\u12D1','\u12D2','\u12D3','\u12D4','\u12D5','\u12D6'},
-    {'\u12D8', '\u12D9','\u12DA','\u12DB','\u12DC','\u12DD','\u12DE'},
-    {'\u12E0', '\u12E1','\u12E2','\u12E3','\u12E4','\u12E5','\u12E6'},
-    {'\u12E8', '\u12E9','\u12EA','\u12EB','\u12EC','\u12ED','\u12EE'},
-    {'\u12F0', '\u12F1','\u12F2','\u12F3','\u12F4','\u12F5','\u12F6'},
-    {'\u12F8', '\u12F9','\u12FA','\u12FB','\u12FC','\u12FD','\u12FE'},
-    {'\u1300', '\u1301','\u1302','\u1303','\u1304','\u1305','\u1306'},
-    {'\u1308', '\u1309','\u130A','\u130B','\u130C','\u130D','\u130E'},
-    {'\u1320', '\u1321','\u1322','\u1323','\u1324','\u1325','\u1326'},
-    {'\u1328', '\u1329','\u132A','\u132B','\u132C','\u132D','\u132E'},
-    {'\u1340', '\u1341','\u1342','\u1343','\u1344','\u1345','\u1346'},
-    {'\u1348', '\u1349','\u134A','\u134B','\u134C','\u134D','\u134E'},
-    {'\u1350', '\u1351','\u1352','\u1353','\u1354','\u1355','\u1356'}
+    {'ሀ', 'ሁ','ሂ','ሃ','ሄ','ህ','ሆ'},
+    {'ለ', 'ሉ','ሊ','ላ','ሌ','ል','ሎ'},
+    {'ሐ', 'ሑ','ሒ','ሓ','ሔ','ሕ','ሖ'},
+    {'መ', 'ሙ','ሚ','ማ','ሜ','ም','ሞ'},
+    {'ሠ', 'ሡ','ሢ','ሣ','ሤ','ሥ','ሦ'},
+    {'ረ', 'ሩ','ሪ','ራ','ሬ','ር','ሮ'},
+    {'ሰ', 'ሱ','ሲ','ሳ','ሴ','ስ','ሶ'},
+    {'ሸ', 'ሹ','ሺ','ሻ','ሼ','ሽ','ሾ'},
+    {'ቀ', 'ቁ','ቂ','ቃ','ቄ','ቅ','ቆ'},
+    {'በ', 'ቡ','ቢ','ባ','ቤ','ብ','ቦ'},
+    {'ቨ', 'ቩ','ቪ','ቫ','ቬ','ቭ','ቮ'},
+    {'ተ', 'ቱ','ቲ','ታ','ቴ','ት','ቶ'},
+    {'ቸ', 'ቹ','ቺ','ቻ','ቼ','ች','ቾ'},
+    {'ኀ', 'ኁ','ኂ','ኃ','ኄ','ኅ','ኆ'},
+    {'ነ', 'ኑ','ኒ','ና','ኔ','ን','ኖ'},
+    {'ኘ', 'ኙ','ኚ','ኛ','ኜ','ኝ','ኞ'},
+    {'አ', 'ኡ','ኢ','ኣ','ኤ','እ','ኦ'},
+    {'ከ', 'ኩ','ኪ','ካ','ኬ','ክ','ኮ'},
+    {'ኸ', 'ኹ','ኺ','ኻ','ኼ','ኽ','ኾ'},
+    {'ወ', 'ዉ','ዊ','ዋ','ዌ','ው','ዎ'},
+    {'ዐ', 'ዑ','ዒ','ዓ','ዔ','ዕ','ዖ'},
+    {'ዘ', 'ዙ','ዚ','ዛ','ዜ','ዝ','ዞ'},
+    {'ዠ', 'ዡ','ዢ','ዣ','ዤ','ዥ','ዦ'},
+    {'የ', 'ዩ','ዪ','ያ','ዬ','ይ','ዮ'},
+    {'ደ', 'ዱ','ዲ','ዳ','ዴ','ድ','ዶ'},
+    {'ዸ', 'ዹ','ዺ','ዻ','ዼ','ዽ','ዾ'},
+    {'ጀ', 'ጁ','ጂ','ጃ','ጄ','ጅ','ጆ'},
+    {'ገ', 'ጉ','ጊ','ጋ','ጌ','ግ','ጎ'},
+    {'ጠ', 'ጡ','ጢ','ጣ','ጤ','ጥ','ጦ'},
+    {'ጨ', 'ጩ','ጪ','ጫ','ጬ','ጭ','ጮ'},
+    {'ፀ', 'ፁ','ፂ','ፃ','ፄ','ፅ','ፆ'},
+    {'ፈ', 'ፉ','ፊ','ፋ','ፌ','ፍ','ፎ'},
+    {'ፐ', 'ፑ','ፒ','ፓ','ፔ','ፕ','ፖ'}
   };
 
-  private static char HA ='ሀ';
+  private static char HA = 'ሀ';
   private static char HU= 'ሁ'; // ሁ
   private static char HI ='ሂ';
   private static char HAA ='ሃ';
@@ -283,53 +283,7 @@ public class AmharicStemmer {
   private static char PE='ፕ';
   private static char PO='ፖ';
    
-  public int stem(char buffer[], int len) {
-    len = stemPrefix(buffer, len);
-    len = stemSuffix(buffer, len);
-    return len;
-  }
-
-  public int stemPrefix(char s[], int len) {
-    int l = 0;
-
-    if ((s[l]==E && s[l+1]==NE && s[l+2]==DE) || // 3 PREFIXES
-        (s[l]==E && s[l+1]==NE && s[l+2]==DA) ||
-        (s[l]==E && s[l+1]==NE && s[l+2]==DI) ||
-        (s[l]==YA && s[l+1]==MAA && s[l+2]==YE)){
-      len = deleteN(s, l, len, 3);
-      l+=3;
-    } else if ((s[l]==E && s[l+1]==NE ) || // 2 PREFIXES
-            (s[l]==E && s[l+1]==NA ) ||
-            (s[l]==E && s[l+1]==YA ) ||
-            (s[l]==A && s[l+1]==LE ) ||
-            (s[l]==YA && s[l+1]==MI ) ||
-            (s[l]==YA && s[l+1]==ME ) ||
-            (s[l]==A && s[l+1]==YE )  ||
-            (s[l]==A && s[l+1]==SE ) ||
-            (s[l]==BA && s[l+1]==MA ) ||
-            (s[l]==YA && s[l+1]==TA)) {
-      len = deleteN(s, l, len, 2);
-      l+=2;
-    } else if ((s[l] == E) || // 1 PREFIX 
-              (s[l]==LE ) ||
-              (s[l]==TE ) ||
-              (s[l]==YE ) ||
-              (s[l]==BE ) ||
-              (s[l]==BA ) ||
-              (s[l]==BI ) ||
-              (s[l]==MA ) ||
-              (s[l]==KA ) ||
-              (s[l]==LA ) ||
-              (s[l]==YAA ) ||
-              (s[l]==YA ) ||
-              (s[l]==LE )){
-      len = deleteN(s, l, len, 2);        
-      l+=1;
-    }
-    return len;
-  }
-
-  public int stemSuffix(char s[], int len) {
+  public int stem(char s[], int len) {
     if (s[len-1] == NAA) {
       len = deleteN(s, len-1, len, 1);
     }
@@ -355,7 +309,9 @@ public class AmharicStemmer {
               (s[last-3]==SHAA && s[last-2]==CA &&s[last-1]==WAA && s[last]==LE))) { 
       last -= 4;
       len = deleteN(s, last, len, 4);
-    } else if (last > 3 && // 3 SUFFIXES
+    }
+   
+    else if (last > 3 && // 3 SUFFIXES
               ((s[last-2]==SHE &&s[last-1]==NYAA && s[last]==LE) ||
               (s[last-2]==SHE &&s[last-1]==WAA && s[last]==LE) ||
               (s[last-2]==SHAA &&s[last-1]==TAA && s[last]==LE) ||
@@ -462,6 +418,72 @@ public class AmharicStemmer {
       len = deleteN(s, last, len, 1);
     }
 
+    // step 4
+    int l = 0;
+
+    if ((s[l]==E && s[l+1]==NE && s[l+2]==DE) || // 3 PREFIXES
+        (s[l]==E && s[l+1]==NE && s[l+2]==DA) ||
+        (s[l]==E && s[l+1]==NE && s[l+2]==DI) ||
+        (s[l]==YA && s[l+1]==MAA && s[l+2]==YE)){
+      len = deleteN(s, l, len, 3);
+      l+=3;
+    } else if ((s[l]==E && s[l+1]==NE ) || // 2 PREFIXES
+            (s[l]==E && s[l+1]==NA ) ||
+            (s[l]==E && s[l+1]==YA ) ||
+            (s[l]==A && s[l+1]==LE ) ||
+            (s[l]==YA && s[l+1]==MI ) ||
+            (s[l]==YA && s[l+1]==ME ) ||
+            (s[l]==A && s[l+1]==YE )  ||
+            (s[l]==A && s[l+1]==SE ) ||
+            (s[l]==BA && s[l+1]==MA ) ||
+            (s[l]==YA && s[l+1]==TA)) {
+      len = deleteN(s, l, len, 2);
+      l+=2;
+    } 
+    /* else if ((s[l] == E) || // 1 PREFIX 
+              (s[l]==LE ) ||
+              (s[l]==TE ) ||
+              (s[l]==YE ) ||
+              (s[l]==BE ) ||
+              (s[l]==BA ) ||
+              (s[l]==BI ) ||
+              (s[l]==KA ) ||
+              (s[l]==LA ) ||
+              (s[l]==YAA ) ||
+              (s[l]==YA ) ||
+              (s[l]==LE )){
+      len = deleteN(s, l, len, 1);        
+      l+=1;
+    }
+
+
+    boolean found;
+    for(int w = l; w <= last; w++){
+      found = false;
+      for(int i=0; i < UNICODECHARS.length; i++){
+          for(int j=0; j < UNICODECHARS[i].length; j++){
+              if(s[w] == UNICODECHARS[i][j]) {
+                  s[w] = UNICODECHARS[i][5];
+                  found = true;
+                  break;
+              }
+              if(found) break;
+          }
+      }
+    }
+/*
+    // k = last
+    int le = last - l + 1;
+    boolean repeated=true;
+
+    for(int i = l; i < last; i++) {
+      if(s[i] == s[i+1]) {
+        for(int j=i+1; j < last; j++) s[j] = s[j+1];
+        last--;
+        break;
+      }
+    }
+*/
     return len;
   }
 }
