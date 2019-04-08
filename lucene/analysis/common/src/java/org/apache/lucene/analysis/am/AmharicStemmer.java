@@ -177,29 +177,29 @@ public class AmharicStemmer {
             (endsWith(s, len, "ነት")))) {
       last -= 2;
       len = deleteN(s, last, len, 2);
-    } else if ((last>1 && s[last]==NYE) || // 1 SUFFIX
-            (last>1 && s[last]==HE) || 
-            (last>1 && s[last]==SHE) ||
-            (s[last]==WE) ||
-            (s[last]==NE) ||
-            (last>1 && s[last]==WI) ||
-            (last>1 && s[last]==CE) ||
-            (last>1 && s[last]==LE) ||
-            (s[last]==TE) || // "ት"
-            (s[last]==ME)) { // "እኔም"
+    } else if ((last>1 && s[last] == 'ኝ') || // 1 SUFFIX
+            (last > 1 && s[last] == 'ህ') || 
+            (last > 1 && s[last] == 'ሽ') ||
+            (s[last] == 'ው') ||
+            (s[last] == 'ን') ||
+            (last > 1 && s[last] == 'ዊ') ||
+            (last > 1 && s[last] == 'ች') ||
+            (last > 1 && s[last] == 'ል') ||
+            (s[last] == 'ት') ||
+            (s[last] == 'ም')) { // "እኔም"
       last -= 1;
       len = deleteN(s, last, len, 1);
     }
 
     // step 4
     int l = 0;
-
+/*
     if ((endsWith(s, len, "እንድ")) ||
        (endsWith(s, len, "እንደ")) ||
        (endsWith(s, len, "እንዲ")) ||
        (endsWith(s, len, "የማይ"))) {
       len = deleteN(s, l, len, 3);
-      l+=3;
+      l += 3;
     } else if ((endsWith(s, len, "እን")) ||
               (endsWith(s, len, "እነ")) ||
               (endsWith(s, len, "እየ")) ||
@@ -211,7 +211,7 @@ public class AmharicStemmer {
               (endsWith(s, len, "በመ")) ||
               (endsWith(s, len, "የተ"))) {
       len = deleteN(s, l, len, 2);
-      l+=2;
+      l += 2;
     } 
     else if ((endsWith(s, len, "እ")) ||
             (endsWith(s, len, "ል")) ||
@@ -226,10 +226,10 @@ public class AmharicStemmer {
             (endsWith(s, len, "የ")) ||
             (endsWith(s, len, "ል"))) {
       len = deleteN(s, l, len, 1);        
-      l+=1;
+      l += 1;
     }
-
-
+*/
+/*
     boolean found;
     for(int w = l; w <= last; w++){
       found = false;
@@ -244,7 +244,7 @@ public class AmharicStemmer {
           }
       }
     }
-/*
+
     // k = last
     int le = last - l + 1;
     boolean repeated=true;
