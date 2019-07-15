@@ -177,7 +177,8 @@ public class AmharicStemmer {
             (endsWith(s, len, "ነት")))) {
       last -= 2;
       len = deleteN(s, last, len, 2);
-    } else if ((last>1 && s[last] == 'ኝ') || // 1 SUFFIX
+    
+    } else if ((last > 1 && s[last] == 'ኝ') || // 1 SUFFIX
             (last > 1 && s[last] == 'ህ') || 
             (last > 1 && s[last] == 'ሽ') ||
             (s[last] == 'ው') ||
@@ -185,15 +186,16 @@ public class AmharicStemmer {
             (last > 1 && s[last] == 'ዊ') ||
             (last > 1 && s[last] == 'ች') ||
             (last > 1 && s[last] == 'ል') ||
-            (s[last] == 'ት') ||
-            (s[last] == 'ም')) { // "እኔም"
+            (s[last] == 'ት')
+            || (s[last] == 'ም')
+            ) { // "እኔም"
       last -= 1;
       len = deleteN(s, last, len, 1);
     }
 
     // step 4
     int l = 0;
-/*
+
     if ((endsWith(s, len, "እንድ")) ||
        (endsWith(s, len, "እንደ")) ||
        (endsWith(s, len, "እንዲ")) ||
@@ -228,8 +230,8 @@ public class AmharicStemmer {
       len = deleteN(s, l, len, 1);        
       l += 1;
     }
-*/
-/*
+
+    // remove vowels
     boolean found;
     for(int w = l; w <= last; w++){
       found = false;
@@ -245,18 +247,6 @@ public class AmharicStemmer {
       }
     }
 
-    // k = last
-    int le = last - l + 1;
-    boolean repeated=true;
-
-    for(int i = l; i < last; i++) {
-      if(s[i] == s[i+1]) {
-        for(int j=i+1; j < last; j++) s[j] = s[j+1];
-        last--;
-        break;
-      }
-    }
-*/
     return len;
   }
 }

@@ -50,8 +50,8 @@ public class TestAmharicAnalyzer extends BaseTokenStreamTestCase {
    */
   public void testDefaultStopwords() throws Exception {
     AmharicAnalyzer a = new AmharicAnalyzer();
-    //assertAnalyzesTo(a, "ግን ይህ በጣም ረቂቅ ነው", new String[] {
-    //    "በጣም", "ረቂቅ" });
+    assertAnalyzesTo(a, "ግን ይህ ረቂቅ ነው", new String[] {
+        "በጣም", "ረቂቅ" });
     a.close();
   }
 
@@ -60,8 +60,8 @@ public class TestAmharicAnalyzer extends BaseTokenStreamTestCase {
    */
   public void testIgnorsMarks() throws Exception {
     AmharicAnalyzer a = new AmharicAnalyzer();
-    //assertAnalyzesTo(a, "ግን። ይህ በጣም፣ረቂቅ። ነው ።", new String[] {
-    //    "በጣም", "ረቂቅ" });
+    assertAnalyzesTo(a, "ግን። ይህ በጣም፣ረቂቅ። ነው ።", new String[] {
+        "በጣም", "ረቂቅ" });
     a.close();
   }
   
