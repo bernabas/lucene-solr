@@ -17,32 +17,26 @@
 package org.apache.lucene.analysis.am;
 
 
-import java.io.IOException;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.BaseTokenStreamTestCase;
-import org.apache.lucene.analysis.CharArraySet;
-import org.apache.lucene.analysis.MockTokenizer;
+import org.apache.lucene.analysis.TokenFilter;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.core.KeywordTokenizer;
-import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
+
+import java.io.IOException;
 
 /**
- * Test the Amharic Normalization Filter
- *
+ * Test Codes for AmharicStemmer
  */
-public class TestAmharicStemFilter extends BaseTokenStreamTestCase {
-  public void testNAASuffix() throws IOException {
-    //check("መምጣትና", "ምትት"); 
-    //check("መምታትና", "ምትት");
-    //check("መታኝ", "ምኝ");
+public class TestAmharicStemmer extends BaseTokenStreamTestCase {
+  public void testBasic() throws IOException {
     check("ቤታቸውን", "ብት");
-    // check("ፈላለገ", "ፍልግ");
+    //check("ፈላለገ", "ፍልግ"); // failing
   }
 
-  private void check(final String input, final String expected) throws IOException {
-    MockTokenizer tokenStream  = whitespaceMockTokenizer(input);
-    AmharicStemFilter filter = new AmharicStemFilter(tokenStream);
-    assertTokenStreamContents(filter, new String[]{expected});
+  private void check(String input, String output) throws IOException {
+    Tokenizer tokenizer = whitespaceMockTokenizer(input);
+    TokenFilter tf = new AmharicStemFilter(tokenizer);
+    assertTokenStreamContents(tf, new String[] { output });
   }
 }

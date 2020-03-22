@@ -21,9 +21,6 @@ import static org.apache.lucene.analysis.util.StemmerUtil.endsWith;
 import static org.apache.lucene.analysis.util.StemmerUtil.startsWith;
 import static org.apache.lucene.analysis.util.StemmerUtil.delete;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class AmharicStemmer {
   private static final char[][] AMHARIC_CHARS = { 
     {'ሀ', 'ሁ','ሂ','ሃ','ሄ','ህ','ሆ'},
@@ -90,30 +87,31 @@ public class AmharicStemmer {
   };
 
   public int stem(char s[], int len) {
-
     // build a consonant-vowel form
-    // ArrayList<Character> cvForm = new ArrayList<Character>();
     String cvForm = "";
     for(int x = 0; x < len; x++){
       char a = s[x];
+      boolean found = false;
       for(int i = 0; i < AMHARIC_CHARS.length; i++) {
         for(int j = 0; j < AMHARIC_CHARS[i].length; j++) {
           if(a == AMHARIC_CHARS[i][j]) {
              if(j == 5) {
               // no need to add a vowel
-              s[x] = a;
               cvForm += a;
              } else {
               // find vowel
               cvForm += AMHARIC_CHARS[i][5];
               cvForm += VOWELS[j];
              }
+             found = true;
           }
+          if (found) break;
         }
+        if (found) break;
       }
     }
-    char [] word = cvForm.toCharArray();
 
+    char [] word = cvForm.toCharArray();
     int wordLength = word.length;
     if (word.length > 3) {
       // remove suffix
@@ -137,9 +135,11 @@ public class AmharicStemmer {
 
     // word stem
     for(int i = 0; i < wordLength; i++) {
-      for(int j = 0; j < VOWELS.length; i++) {
+      for(int j = 0; j < VOWELS.length; j++) {
         if (word[i] == VOWELS[j]) {
           wordLength = delete(word, i, wordLength);
+          i--; // stay in current pos
+          break;
         }
       }
     }
