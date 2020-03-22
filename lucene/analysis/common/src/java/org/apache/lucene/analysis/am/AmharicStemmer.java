@@ -111,6 +111,9 @@ public class AmharicStemmer {
       }
     }
 
+    // if no amharic character is found, do nothing
+    if (cvForm == "") return len;
+
     char [] word = cvForm.toCharArray();
     int wordLength = word.length;
     if (word.length > 3) {

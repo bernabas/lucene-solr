@@ -51,7 +51,7 @@ public class TestAmharicAnalyzer extends BaseTokenStreamTestCase {
   public void testDefaultStopwords() throws Exception {
     AmharicAnalyzer a = new AmharicAnalyzer();
     assertAnalyzesTo(a, "ግን ይህ ረቂቅ ነው", new String[] {
-        "በጣም", "ረቂቅ" });
+        "ርቅቅ" });
     a.close();
   }
 
@@ -61,7 +61,7 @@ public class TestAmharicAnalyzer extends BaseTokenStreamTestCase {
   public void testIgnorsMarks() throws Exception {
     AmharicAnalyzer a = new AmharicAnalyzer();
     assertAnalyzesTo(a, "ግን። ይህ በጣም፣ረቂቅ። ነው ።", new String[] {
-        "በጣም", "ረቂቅ" });
+       "ብጥ", "ርቅቅ" });
     a.close();
   }
   
@@ -71,8 +71,8 @@ public class TestAmharicAnalyzer extends BaseTokenStreamTestCase {
   public void testCustomStopwords() throws Exception {
     CharArraySet set = new CharArraySet(asSet("የእነሱ"), false);
     AmharicAnalyzer a = new AmharicAnalyzer(set);
-    assertAnalyzesTo(a, "የእነሱ ሀዲስ ዓለማየሁ", new String[] { "ሀዲስ",
-        "ኣለማየሁ" });
+    assertAnalyzesTo(a, "የእነሱ ሀዲስ ዓለማየሁ", new String[] { "ህድስ",
+        "ዕልምይህ" });
     a.close();
   }
 
