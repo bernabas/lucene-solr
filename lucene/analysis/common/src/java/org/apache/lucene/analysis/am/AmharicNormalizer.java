@@ -42,100 +42,103 @@ public class AmharicNormalizer {
      */
     public int normalize(char s[], int len) {
         for(int i = 0; i < len; i++) {
-                switch(s[i]) {
-                    // (ሐ or ኀ) to ሀ
-                    case 'ሐ':
-                    case 'ኀ':
-                      s[i] = 'ሀ';
-                      break;
-                    case 'ሑ':
-                    case 'ኁ':
-                      s[i] = 'ሁ';
-                      break;
-                    case 'ሒ':
-                    case 'ኂ':
-                      s[i] = 'ሂ';
-                      break;
-                    case 'ሓ':
-                    case 'ኃ':
-                      s[i] = 'ሃ';
-                      break;
-                    case 'ሔ':
-                    case 'ኄ':
-                      s[i] = 'ሄ';
-                      break;
-                    case 'ሕ':
-                    case 'ኅ':
-                      s[i] = 'ህ';
-                      break;
-                    case 'ሖ':
-                    case 'ኆ':
-                      s[i] = 'ሆ';
-                      break;  
-                    // ሠ to ሰ
-                    case 'ሠ':
-                      s[i] = 'ሰ';
-                      break;
-                    case 'ሡ':
-                      s[i] = 'ሱ';
-                      break;
-                    case 'ሢ':
-                      s[i] = 'ሲ';
-                      break; 
-                    case 'ሣ':
-                      s[i] = 'ሳ';
-                      break;
-                    case 'ሤ':
-                      s[i] = 'ሴ';
-                      break;
-                    case 'ሥ':
-                      s[i] = 'ስ';
-                      break;
-                    case 'ሦ':
-                      s[i] = 'ሶ';
-                      break;        
-                    // ዐ to አ   
-                    case 'ዐ':
-                      s[i] = 'አ';
-                      break;
-                    case 'ዑ':
-                      s[i] = 'ኡ';
-                      break;
-                    case 'ዒ':
-                      s[i] = 'ኢ';
-                      break;
-                    case 'ዓ':
-                      s[i] = 'ኣ';
-                      break;
-                    case 'ዔ':
-                      s[i] = 'ኤ';
-                      break;
-                    case 'ዕ':
-                      s[i] = 'ኦ';
-                      break;
-                    // ጸ to ፀ
-                    case 'ጸ':
-                      s[i] = 'ፀ';
-                      break;
-                    case 'ጹ':
-                      s[i] = 'ፁ';
-                      break;
-                    case 'ጺ':
-                      s[i] = 'ፂ';
-                      break;
-                    case 'ጻ':
-                      s[i] = 'ፃ';
-                      break;
-                    case 'ጼ':
-                      s[i] = 'ፄ';
-                      break;
-                    case 'ጽ':
-                      s[i] = 'ፅ';
-                      break;
-                    case 'ጾ':
-                      s[i] = 'ፆ';
-                      break;    
-                } 
+          switch(s[i]) {
+            // (ሐ or ኀ) to ሀ
+            case 'ሐ':
+            case 'ኀ':
+              s[i] = 'ሀ';
+              break;
+            case 'ሑ':
+            case 'ኁ':
+              s[i] = 'ሁ';
+              break;
+            case 'ሒ':
+            case 'ኂ':
+              s[i] = 'ሂ';
+              break;
+            case 'ሓ':
+            case 'ኃ':
+              s[i] = 'ሃ';
+              break;
+            case 'ሔ':
+            case 'ኄ':
+              s[i] = 'ሄ';
+              break;
+            case 'ሕ':
+            case 'ኅ':
+              s[i] = 'ህ';
+              break;
+            case 'ሖ':
+            case 'ኆ':
+              s[i] = 'ሆ';
+              break;  
+            // ሠ to ሰ
+            case 'ሠ':
+              s[i] = 'ሰ';
+              break;
+            case 'ሡ':
+              s[i] = 'ሱ';
+              break;
+            case 'ሢ':
+              s[i] = 'ሲ';
+              break; 
+            case 'ሣ':
+              s[i] = 'ሳ';
+              break;
+            case 'ሤ':
+              s[i] = 'ሴ';
+              break;
+            case 'ሥ':
+              s[i] = 'ስ';
+              break;
+            case 'ሦ':
+              s[i] = 'ሶ';
+              break;        
+            // አ to ዐ   
+            case 'አ':
+              s[i] = 'ዐ';
+              break;
+            case 'ኡ':
+              s[i] = 'ዑ';
+              break;
+            case 'ኢ':
+              s[i] = 'ዒ';
+              break;
+            case 'ኣ':
+              s[i] = 'ዓ';
+              break;
+            case 'ኤ':
+              s[i] = 'ዔ';
+              break;
+            case 'ኧ':
+              s[i] = 'ዕ';
+              break;
+            case 'ኦ':
+              s[i] = 'ዕ';
+              break;
+            // ጸ to ፀ
+            case 'ጸ':
+              s[i] = 'ፀ';
+              break;
+            case 'ጹ':
+              s[i] = 'ፁ';
+              break;
+            case 'ጺ':
+              s[i] = 'ፂ';
+              break;
+            case 'ጻ':
+              s[i] = 'ፃ';
+              break;
+            case 'ጼ':
+              s[i] = 'ፄ';
+              break;
+            case 'ጽ':
+              s[i] = 'ፅ';
+              break;
+            case 'ጾ':
+              s[i] = 'ፆ';
+              break;    
+          } 
         }
         return len;
     }

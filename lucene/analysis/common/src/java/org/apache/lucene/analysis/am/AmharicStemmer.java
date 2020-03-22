@@ -18,10 +18,14 @@ package org.apache.lucene.analysis.am;
 
 import static org.apache.lucene.analysis.util.StemmerUtil.deleteN;
 import static org.apache.lucene.analysis.util.StemmerUtil.endsWith;
+import static org.apache.lucene.analysis.util.StemmerUtil.startsWith;
+import static org.apache.lucene.analysis.util.StemmerUtil.delete;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AmharicStemmer {
-
-  private static final char[][] UNICODECHARS = { 
+  private static final char[][] AMHARIC_CHARS = { 
     {'ሀ', 'ሁ','ሂ','ሃ','ሄ','ህ','ሆ'},
     {'ለ', 'ሉ','ሊ','ላ','ሌ','ል','ሎ'},
     {'ሐ', 'ሑ','ሒ','ሓ','ሔ','ሕ','ሖ'},
@@ -57,196 +61,92 @@ public class AmharicStemmer {
     {'ፐ', 'ፑ','ፒ','ፓ','ፔ','ፕ','ፖ'}
   };
 
+  private static final char[] VOWELS = { 'ኧ', 'ኡ', 'ኢ', 'ኣ', 'ኤ', 'እ', 'ኦ' }; 
+
+  // suffix list
+  private static final String[] SUFFIX = {
+    "ኢዕኧልኧሽ", "ኣውኢው", "ኣችኧውኣል", "ኧችኣት", "ኧችኣችህኡ", 
+    "ኧችኣችኧው", "ኣልኧህኡ", "ኣውኦች", "ኣልኧህ", "ኣልኧሽ", 
+    "ኣልችህኡ", "ኣልኣልኧች", "ብኣችኧውስ", "ብኣችኧው", "ኣችኧውን", 
+    "ኣልኧች", "ኣልኧን", "ኣልኣችህኡ", "ኣችህኡን", "ኣችህኡ", "ኣችህኡት",
+    "ውኦችንንኣ", "ውኦችን", "ኣችኧው", "ውኦችኡን", "ውኦችኡ", 
+    "ኧውንኣ", "ኦችኡን", "ኦውኦች", "ኧኝኣንኧትም", "ኧኝኣንኣ", "ኧኝኣንኧት",
+    "ኧኝኣን", "ኧኝኣውም", "ኧኝኣው", "ኝኣውኣ", "ብኧትን", "ኣችህኡም",
+    "ኦውኣ", "ኧችው", "ኧችኡ", "ኤችኡ", "ንኧው", "ንኧት", "ኣልኡ",
+    "ኣችን", "ክኡም", "ክኡት", "ክኧው", "ኧችን", "ኧችም", "ኧችህ", 
+    "ኧችሽ", "ኧችን", "ኧችው", "ይኡሽን", "ይኡሽ", "ኧውኢ", "ኦችንንኣ",
+    "ኣውኢ", "ብኧት", "ኦች", "ኦችኡ", "ውኦን", "ኧኝኣ", "ኝኣውን", "ኝኣው",
+    "ኦችን", "ኣል", "ኧም", "ሽው", "\nክም", "ኧው", "ትም", "ውኦ",
+    "ውም", "ውን", "ንም", "ሽን", "ኣች", "ኡት", "ኢት", "ክኡ", "ኤ",
+    "ህ", "ሽ", "ኡ", "ሽ", "ክ", "ኧ", "ኧች", "ኡን", "ን", "ም","ንኣ", "ው"
+  };
+
+  // prefix list
+  private static final String[] PREFIX = {
+    "ስልኧምኣይ", "ይኧምኣት", "ዕንድኧ", "ይኧትኧ", "ብኧምኣ", "ብኧትኧ",
+    "ዕኧል", "ስልኧ", "ምኧስ", "ዕይኧ", "ዕኧስ", "ዕኧት", "ዕኧን", "ዕኧይ",
+    "ይኣል", "ስኣት", "ስኣን", "ስኣይ", "ስኣል", "ይኣስ", "ይኧ", "ልኧ",
+    "ክኧ", "እን", "ዕን", "ዐል", "ይ", "ት", "አ", "እ"
+  };
+
   public int stem(char s[], int len) {
-    if (endsWith(s, len, "ና")) { // 
-      len = deleteN(s, len-1, len, 1);
-    }
 
-    int last = len - 1;
-
-    if (last > 6 && // 5 SUFFIXES
-        ((endsWith(s, len, "አችኋለሁ")) ||
-        (endsWith(s, len, "አችዋለሁ")) ||
-        (endsWith(s, len, "አችዋለሽ")))) {
-      last -= 5;
-      len = deleteN(s, last + 1, len, 5);
-    } else if (last > 5 && // 4 SUFFIXES
-              ((endsWith(s, len, "ችሁአት")) ||
-              (endsWith(s, len, "ዋችኋል")) ||
-              (endsWith(s, len, "ዋቸዋል")) ||
-              (endsWith(s, len, "ቸዋለች")) ||
-              (endsWith(s, len, "አታለሁ")) ||
-              (endsWith(s, len, "አታለሽ")) ||
-              (endsWith(s, len, "ሃቸዋል")) ||
-              (endsWith(s, len, "ቸዋለህ")) ||
-              (endsWith(s, len, "ሻአቸው")) ||
-              (endsWith(s, len, "ሻቸዋል")))) {    
-      last -= 4;
-      len = deleteN(s, last, len, 4);
-    }
-    else if (last > 3 && // 3 SUFFIXES
-            ((endsWith(s, len, "ሽኛል")) ||
-            (endsWith(s, len, "ሽዋል")) ||
-            (endsWith(s, len, "ሻታል")) ||
-            (endsWith(s, len, "ሽናል")) ||
-            (endsWith(s, len, "ሻቸው")) ||
-            (endsWith(s, len, "ኛለሽ")) ||
-            (endsWith(s, len, "ዋለሽ")) ||
-            (endsWith(s, len, "ናለሽ")) ||
-            (endsWith(s, len, "ኋጨው")) ||
-            (endsWith(s, len, "ኸኛል")) ||
-            (endsWith(s, len, "ኸዋል")) ||
-            (endsWith(s, len, "ሃተል")) ||
-            (endsWith(s, len, "ኸናል")) ||
-            (endsWith(s, len, "ኛለህ")) ||
-            (endsWith(s, len, "ዋለህ")) ||
-            (endsWith(s, len, "ታለህ")) ||
-            (endsWith(s, len, "ናለህ")) ||
-            (endsWith(s, len, "ኋችሁ")) ||
-            (endsWith(s, len, "ኋቸው")) ||
-            (endsWith(s, len, "ሃለሁ")) ||
-            (endsWith(s, len, "ሻለሁ")) ||
-            (endsWith(s, len, "ዋለሁ")) ||
-            (endsWith(s, len, "ቻችሁ")) ||
-            (endsWith(s, len, "ቻችው")) ||
-            (endsWith(s, len, "ናችሁ")) ||
-            (endsWith(s, len, "ናቸው")) ||
-            (endsWith(s, len, "ችሁኝ")) ||
-            (endsWith(s, len, "ችሁት")) ||
-            (endsWith(s, len, "ችሁን")) ||
-            (endsWith(s, len, "ኘለች")) ||
-            (endsWith(s, len, "ሃለች")) ||
-            (endsWith(s, len, "ሻለች")) ||
-            (endsWith(s, len, "ዋለች")) ||
-            (endsWith(s, len, "ታለች")) ||
-            (endsWith(s, len, "ናለች")) ||
-            (endsWith(s, len, "ንሃል")) ||
-            (endsWith(s, len, "ንሻል")) ||
-            (endsWith(s, len, "ነዋል")) ||
-            (endsWith(s, len, "ናታል")) ||
-            (endsWith(s, len, "ውኛል")) ||
-            (endsWith(s, len, "ውሃል")) ||
-            (endsWith(s, len, "ውሻል")) ||
-            (endsWith(s, len, "ውታል")) ||
-            (endsWith(s, len, "ዋታል")) ||
-            (endsWith(s, len, "ውናል")) ||
-            (endsWith(s, len, "ዋችሁ")) ||
-            (endsWith(s, len, "ዋችው")) ||
-            (endsWith(s, len, "ውያን")))){
-        last -= 3;
-        len = deleteN(s, last, len, 3);
-    }
-    else if (last > 2 && // 2 SUFFIXES
-            ((endsWith(s, len, "ሽኝ")) ||
-            (endsWith(s, len, "ሽው")) ||
-            (endsWith(s, len, "ሻት")) ||
-            (endsWith(s, len, "ሽን")) ||
-            (endsWith(s, len, "ኛል")) ||
-            (endsWith(s, len, "ሃል")) ||
-            (endsWith(s, len, "ሻል")) ||
-            (endsWith(s, len, "ታል")) ||
-            (endsWith(s, len, "ናል")) ||
-            (endsWith(s, len, "ችሁ")) ||
-            (endsWith(s, len, "ቸሁ")) ||
-            (endsWith(s, len, "ኸኝ")) ||
-            (endsWith(s, len, "ኸው")) ||
-            (endsWith(s, len, "ሃት")) ||
-            (endsWith(s, len, "ኸን")) ||
-            (endsWith(s, len, "ሁህ")) ||
-            (endsWith(s, len, "ሁሽ")) ||
-            (endsWith(s, len, "ሁት")) ||
-            (endsWith(s, len, "ኋት")) ||
-            (endsWith(s, len, "ችኝ")) ||
-            (endsWith(s, len, "ችህ")) ||
-            (endsWith(s, len, "ችሽ")) ||
-            (endsWith(s, len, "ችው")) ||
-            (endsWith(s, len, "ቻት")) ||
-            (endsWith(s, len, "ችን")) ||
-            (endsWith(s, len, "ንህ")) ||
-            (endsWith(s, len, "ንሽ")) ||
-            (endsWith(s, len, "ነው")) ||
-            (endsWith(s, len, "ናት")) ||
-            (endsWith(s, len, "ውኝ")) ||
-            (endsWith(s, len, "ውህ")) ||
-            (endsWith(s, len, "ውሽ")) ||
-            (endsWith(s, len, "ውት")) ||
-            (endsWith(s, len, "ዋት")) ||
-            (endsWith(s, len, "ዎች")) ||
-            (endsWith(s, len, "ያን")) ||
-            (endsWith(s, len, "ያት")) ||
-            (endsWith(s, len, "ነት")))) {
-      last -= 2;
-      len = deleteN(s, last, len, 2);
-    
-    } else if ((last > 1 && s[last] == 'ኝ') || // 1 SUFFIX
-            (last > 1 && s[last] == 'ህ') || 
-            (last > 1 && s[last] == 'ሽ') ||
-            (s[last] == 'ው') ||
-            (s[last] == 'ን') ||
-            (last > 1 && s[last] == 'ዊ') ||
-            (last > 1 && s[last] == 'ች') ||
-            (last > 1 && s[last] == 'ል') ||
-            (s[last] == 'ት')
-            || (s[last] == 'ም')
-            ) { // "እኔም"
-      last -= 1;
-      len = deleteN(s, last, len, 1);
-    }
-
-    // step 4
-    int l = 0;
-
-    if ((endsWith(s, len, "እንድ")) ||
-       (endsWith(s, len, "እንደ")) ||
-       (endsWith(s, len, "እንዲ")) ||
-       (endsWith(s, len, "የማይ"))) {
-      len = deleteN(s, l, len, 3);
-      l += 3;
-    } else if ((endsWith(s, len, "እን")) ||
-              (endsWith(s, len, "እነ")) ||
-              (endsWith(s, len, "እየ")) ||
-              (endsWith(s, len, "አል")) ||
-              (endsWith(s, len, "የሚ")) ||
-              (endsWith(s, len, "የም")) ||
-              (endsWith(s, len, "አይ")) ||
-              (endsWith(s, len, "አስ")) ||
-              (endsWith(s, len, "በመ")) ||
-              (endsWith(s, len, "የተ"))) {
-      len = deleteN(s, l, len, 2);
-      l += 2;
-    } 
-    else if ((endsWith(s, len, "እ")) ||
-            (endsWith(s, len, "ል")) ||
-            (endsWith(s, len, "ት")) ||
-            (endsWith(s, len, "ይ")) ||
-            (endsWith(s, len, "ብ")) ||
-            (endsWith(s, len, "በ")) ||
-            (endsWith(s, len, "ቢ")) ||
-            (endsWith(s, len, "ከ")) ||
-            (endsWith(s, len, "ለ")) ||
-            (endsWith(s, len, "ያ")) ||
-            (endsWith(s, len, "የ")) ||
-            (endsWith(s, len, "ል"))) {
-      len = deleteN(s, l, len, 1);        
-      l += 1;
-    }
-
-    // remove vowels
-    boolean found;
-    for(int w = l; w <= last; w++){
-      found = false;
-      for(int i=0; i < UNICODECHARS.length; i++){
-          for(int j=0; j < UNICODECHARS[i].length; j++){
-              if(s[w] == UNICODECHARS[i][j]) {
-                  s[w] = UNICODECHARS[i][5];
-                  found = true;
-                  break;
-              }
-              if(found) break;
+    // build a consonant-vowel form
+    // ArrayList<Character> cvForm = new ArrayList<Character>();
+    String cvForm = "";
+    for(int x = 0; x < len; x++){
+      char a = s[x];
+      for(int i = 0; i < AMHARIC_CHARS.length; i++) {
+        for(int j = 0; j < AMHARIC_CHARS[i].length; j++) {
+          if(a == AMHARIC_CHARS[i][j]) {
+             if(j == 5) {
+              // no need to add a vowel
+              s[x] = a;
+              cvForm += a;
+             } else {
+              // find vowel
+              cvForm += AMHARIC_CHARS[i][5];
+              cvForm += VOWELS[j];
+             }
           }
+        }
+      }
+    }
+    char [] word = cvForm.toCharArray();
+
+    int wordLength = word.length;
+    if (word.length > 3) {
+      // remove suffix
+      for(int i = 0; i < SUFFIX.length; i++) {
+        String suffix = SUFFIX[i];
+        if (endsWith(word, wordLength, suffix)) {
+          wordLength = deleteN(word, wordLength - suffix.length(), wordLength, suffix.length());
+          break;
+        }
+      }
+
+      // remove prefix
+      for(int i = 0; i < PREFIX.length; i++) {
+        String prefix = PREFIX[i];
+        if (startsWith(word, wordLength, prefix)) {
+          wordLength = deleteN(word, 0, wordLength, prefix.length());
+          break;
+        }
       }
     }
 
+    // word stem
+    for(int i = 0; i < wordLength; i++) {
+      for(int j = 0; j < VOWELS.length; i++) {
+        if (word[i] == VOWELS[j]) {
+          wordLength = delete(word, i, wordLength);
+        }
+      }
+    }
+
+    // copy over change to s
+    System.arraycopy(word, 0, s, 0, wordLength);
+    len = wordLength;
     return len;
   }
 }

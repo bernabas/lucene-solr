@@ -35,13 +35,9 @@ public class TestAmharicStemFilter extends BaseTokenStreamTestCase {
   public void testNAASuffix() throws IOException {
     //check("መምጣትና", "ምትት"); 
     //check("መምታትና", "ምትት");
-    check("መታኝ", "ምኝ");
-  }
-
-  public void testFiveSuffix() throws IOException {
-    check("ፈልጊአችኋለሁ", "ፍልግ");
-    check("ፈልጊአችዋለሁ", "ፍልግ");
-    check("ፈልጊአችዋለሽ", "ፍልግ");
+    //check("መታኝ", "ምኝ");
+    check("ቤታቸውን", "ብት");
+    // check("ፈላለገ", "ፍልግ");
   }
 
   private void check(final String input, final String expected) throws IOException {
